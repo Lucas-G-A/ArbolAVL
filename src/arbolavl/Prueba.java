@@ -13,11 +13,11 @@ public class Prueba {
         ArbolAVL<Integer> arb = new ArbolAVL();
         arb.inserta(10);
         arb.inserta(15);
-        arb.inserta(12);
-        
-        arb.borrar(12);
-        arb.inserta(5);
+        arb.inserta(20);
+        arb.inserta(25);
+        arb.inserta(22);
         
         arb.inOrden();
+        
     }
 }
