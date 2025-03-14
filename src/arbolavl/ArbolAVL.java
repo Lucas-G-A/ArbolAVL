@@ -53,7 +53,7 @@ public class ArbolAVL <T extends Comparable <T>> {
         if(encontrado)
             return;
         NodoAVL<T> nuevo = new NodoAVL(elem);
-        if(elem.compareTo(padre.getElem())<=0){
+        if(elem.compareTo(padre.getElem())<0){
             padre.setIzq(nuevo);
         }
         else{
@@ -65,7 +65,7 @@ public class ArbolAVL <T extends Comparable <T>> {
         nuevo=nuevo.getPapa();
         int izq,der;
         boolean termine=false;
-        while(nuevo!=null && !termine){
+        while(nuevo!=null){
             izq=0;
             der=0;
             if(nuevo.getIzq()!=null)
@@ -76,6 +76,9 @@ public class ArbolAVL <T extends Comparable <T>> {
             if(der-izq < -1 || der-izq >1){
                 System.out.println("roto");
                 nuevo=rota(nuevo); //aqui regreso beta entonces falta asignar
+            }
+            if (nuevo.getPapa() == null) {
+                raiz = nuevo;
             }
             nuevo=nuevo.getPapa();
         }
@@ -122,15 +125,19 @@ public class ArbolAVL <T extends Comparable <T>> {
             c=gamma.getDer();
             d=alfa.getDer();
             beta.setIzq(a);
-            a.setPapa(beta);
+            if(a!=null)
+                a.setPapa(beta);
             beta.setDer(b);
-            b.setPapa(beta);
+            if(b!=null)
+                b.setPapa(beta);
             gamma.setIzq(beta);
             beta.setPapa(gamma);
             alfa.setIzq(c);
-            c.setPapa(alfa);
+            if(c!=null)
+                c.setPapa(alfa);
             alfa.setDer(d);
-            d.setPapa(alfa);
+            if(d!=null)
+                d.setPapa(alfa);
             gamma.setDer(alfa);
             alfa.setPapa(gamma);
             if(papa!=null){
@@ -139,6 +146,7 @@ public class ArbolAVL <T extends Comparable <T>> {
                 else
                     papa.setDer(gamma);
             }
+            gamma.setPapa(papa);
             return gamma;
         }
         else if(actual.getAvl()==2 && actual.getDer().getAvl()<0){ //DER-IZQ
@@ -151,11 +159,14 @@ public class ArbolAVL <T extends Comparable <T>> {
             c = gamma.getDer();
             d = beta.getDer();
             alfa.setDer(b);
-            b.setPapa(alfa);
+            if(b!=null)
+                b.setPapa(alfa);
             beta.setIzq(c);
-            c.setPapa(beta);
+            if(c!=null)
+                c.setPapa(beta);
             beta.setDer(d);
-            d.setPapa(beta);
+            if(d!=null)
+                d.setPapa(beta);
             gamma.setIzq(alfa);
             alfa.setPapa(gamma);
             gamma.setDer(beta);
@@ -165,10 +176,10 @@ public class ArbolAVL <T extends Comparable <T>> {
                     papa.setIzq(gamma);
                 else
                     papa.setDer(gamma);
-                gamma.setPapa(papa);
                 //actualizar alturas
-                return gamma;
             }
+            gamma.setPapa(papa);
+            return gamma;
         }
         else if (actual.getAvl()==2 && actual.getDer().getAvl()>0){ //DER-DER
             System.out.println("DER-DER");

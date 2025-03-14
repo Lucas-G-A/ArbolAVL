@@ -11,9 +11,9 @@ package arbolavl;
 public class Prueba {
     public static void main(String[] args){
         ArbolAVL<Integer> arb = new ArbolAVL();
-        arb.inserta(5);
-        arb.inserta(4);
-        arb.inserta(3);
+        arb.inserta(10);
+        arb.inserta(15);
+        arb.inserta(12);
         
         arb.inOrden();
     }
