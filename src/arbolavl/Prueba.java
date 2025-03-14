@@ -15,6 +15,9 @@ public class Prueba {
         arb.inserta(15);
         arb.inserta(12);
         
+        arb.borrar(12);
+        arb.inserta(5);
+        
         arb.inOrden();
     }
 }

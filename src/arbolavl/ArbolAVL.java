@@ -186,6 +186,26 @@ public class ArbolAVL <T extends Comparable <T>> {
         }
         return actual; //ACABAR ROTACIONES
     }
+    public void borrar(T elem){
+        NodoAVL<T> actual = busqueda(raiz, elem);
+        borraAVL(actual);
+        if(actual==null){
+            return;
+        }
+        NodoAVL<T> padre=actual.getPapa();
+        boolean termine=false;
+        while(padre!=null && !termine){
+            if(actual.getElem().compareTo(padre.getElem())<0)
+                padre.setAvl(padre.getAvl()+1);
+            else
+                padre.setAvl(padre.getAvl()-1);
+            if(padre.getAvl()==1 || padre.getAvl()==-1)
+                termine=true;
+            if(padre.getAvl()>1 || padre.getAvl()<-1)
+                padre=rota(padre);
+            actual=padre;
+        }
+    }    
     
     private void borraAVL(NodoAVL<T> actual){
         if(actual == null){
@@ -197,7 +217,7 @@ public class ArbolAVL <T extends Comparable <T>> {
             }
             else{
                 NodoAVL<T> padre = actual.getPapa();
-                if(padre.getIzq().equals(actual))
+                if(padre.getIzq() != null && padre.getIzq().equals(actual))
                     padre.setIzq(null);
                 else
                     padre.setDer(null);
@@ -211,14 +231,24 @@ public class ArbolAVL <T extends Comparable <T>> {
                     suc=suc.getIzq();
                 T temp = suc.getElem();
                 actual.setElem(temp);
-                NodoAVL<T> padre = actual.getPapa();
-                if(suc.equals(actual.getDer()))
-                    padre.setIzq(suc.getDer());
-                else
-                    padre.setDer(actual.getDer());
-                cont--;
-                if(suc.getDer()!=null){
-                    suc.getDer().setPapa(padre);
+                NodoAVL<T> padreSuc = suc.getPapa();
+                if(suc.getDer() != null) {
+                    NodoAVL<T> hijoSucDer = suc.getDer();
+                    if(padreSuc.getIzq().equals(suc)) {
+                        padreSuc.setIzq(hijoSucDer);
+                    }
+                    else {
+                        padreSuc.setDer(hijoSucDer);
+                    }
+                    hijoSucDer.setPapa(padreSuc);
+                }
+                else {
+                    if(padreSuc.getIzq().equals(suc)) {
+                        padreSuc.setIzq(null);
+                    } 
+                    else {
+                        padreSuc.setDer(null);
+                    }
                 }
             }
             else{ //un hijo
@@ -231,15 +261,15 @@ public class ArbolAVL <T extends Comparable <T>> {
                 }
                 if(actual.equals(raiz)){
                     raiz=hijo;
-                    cont--;
-                    return;
                 }
-                NodoAVL<T> padre = actual.getPapa();
-                if(padre.getIzq().equals(actual))
-                    padre.setIzq(hijo);
-                else
-                    padre.setDer(hijo);
-                hijo.setPapa(padre);
+                else{
+                    NodoAVL<T> padre = actual.getPapa();
+                    if(padre.getIzq() != null && padre.getIzq().equals(actual))
+                        padre.setIzq(hijo);
+                    else
+                        padre.setDer(hijo);
+                    hijo.setPapa(padre);
+                }
                 cont--;
             }
         }
