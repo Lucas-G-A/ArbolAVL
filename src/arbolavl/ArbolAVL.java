@@ -67,13 +67,13 @@ public class ArbolAVL <T extends Comparable <T>> {
                 padre.setAvl(padre.getAvl()-1);
             else
                 padre.setAvl(padre.getAvl()+1);
-            if(padre.getAvl()==1 || padre.getAvl()==-1 || padre.getAvl()==0)
-                termine=true;
+
             if(padre.getAvl()>1 || padre.getAvl()<-1){
                 padre=rota(padre);
                 actualizarFE(padre);
             }
             nuevo=padre;
+            padre=padre.getPapa();
         }
     }
     private void actualizarFE(NodoAVL<T> actual){
@@ -111,6 +111,9 @@ public class ArbolAVL <T extends Comparable <T>> {
                 else
                     papa.setDer(beta);
             }
+            else{
+                raiz=beta;
+            }
             beta.setPapa(papa);
             return beta;
         }
@@ -144,6 +147,9 @@ public class ArbolAVL <T extends Comparable <T>> {
                 else
                     papa.setDer(gamma);
             }
+            else{
+                raiz=gamma;
+            }
             gamma.setPapa(papa);
             return gamma;
         }
@@ -175,6 +181,9 @@ public class ArbolAVL <T extends Comparable <T>> {
                     papa.setDer(gamma);
                 //actualizar alturas
             }
+            else{
+                raiz=gamma;
+            }
             gamma.setPapa(papa);
             return gamma;
         }
@@ -198,6 +207,9 @@ public class ArbolAVL <T extends Comparable <T>> {
                 else
                     papa.setDer(beta);
             }
+            else{
+                raiz=beta;
+            }
             beta.setPapa(papa);
             return beta;           
         }
@@ -211,16 +223,16 @@ public class ArbolAVL <T extends Comparable <T>> {
         }
         NodoAVL<T> padre=actual.getPapa();
         boolean termine=false;
+        actualizarFE(actual);
         while(padre!=null && !termine){
-            if(actual.getElem().compareTo(padre.getElem())<0)
-                padre.setAvl(padre.getAvl()-1);
-            else
-                padre.setAvl(padre.getAvl()+1);
-            if(padre.getAvl()==1 || padre.getAvl()==-1)
-                termine=true;
-            if(padre.getAvl()>1 || padre.getAvl()<-1)
+
+            actualizarFE(padre);
+            if(padre.getAvl()>1 || padre.getAvl()<-1){
                 padre=rota(padre);
+                actualizarFE(padre);
+            }
             actual=padre;
+            padre=padre.getPapa();
         }
     }
     

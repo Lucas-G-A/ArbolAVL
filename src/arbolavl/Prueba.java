@@ -12,10 +12,12 @@ public class Prueba {
     public static void main(String[] args){
         ArbolAVL<Integer> arb = new ArbolAVL();
         arb.inserta(10);
-        arb.inserta(1);
-        arb.inserta(13);
-        arb.inserta(15);
-        arb.inserta(18);
+        arb.inserta(8);
+        arb.inserta(6);
+        arb.inserta(4);
+        arb.inserta(2);
+        arb.inserta(3);
+        
         
         arb.preOrden();
         
