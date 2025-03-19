@@ -61,25 +61,32 @@ public class ArbolAVL <T extends Comparable <T>> {
         }
         nuevo.setPapa(padre);
         cont++;
-        nuevo=nuevo.getPapa();
-        int izq,der;
         boolean termine=false;
-        while(nuevo!=null){
-            izq=0;
-            der=0;
-            if(nuevo.getIzq()!=null)
-                izq=nuevo.getIzq().calculaAltura();
-            if(nuevo.getDer()!=null)
-                der=nuevo.getDer().calculaAltura();
-            nuevo.setAvl(der-izq);
-            if(der-izq < -1 || der-izq >1){
-                nuevo=rota(nuevo);
+        while(padre!=null && !termine){
+            if(nuevo.getElem().compareTo(padre.getElem())<0)
+                padre.setAvl(padre.getAvl()-1);
+            else
+                padre.setAvl(padre.getAvl()+1);
+            if(padre.getAvl()==1 || padre.getAvl()==-1 || padre.getAvl()==0)
+                termine=true;
+            if(padre.getAvl()>1 || padre.getAvl()<-1){
+                padre=rota(padre);
+                actualizarFE(padre);
             }
-            if (nuevo.getPapa() == null) {
-                raiz = nuevo;
-            }
-            nuevo=nuevo.getPapa();
+            nuevo=padre;
         }
+    }
+    private void actualizarFE(NodoAVL<T> actual){
+        if(actual==null)
+            return;
+        int izq=0,der=0;
+        if(actual.getIzq()!=null)
+            izq=actual.getIzq().calculaAltura();
+        if(actual.getDer()!=null)
+            der=actual.getDer().calculaAltura();
+        actual.setAvl(der-izq);
+        actualizarFE(actual.getIzq());
+        actualizarFE(actual.getDer());
     }
     
     private NodoAVL<T> rota(NodoAVL<T> actual){
@@ -206,16 +213,16 @@ public class ArbolAVL <T extends Comparable <T>> {
         boolean termine=false;
         while(padre!=null && !termine){
             if(actual.getElem().compareTo(padre.getElem())<0)
-                padre.setAvl(padre.getAvl()+1);
-            else
                 padre.setAvl(padre.getAvl()-1);
+            else
+                padre.setAvl(padre.getAvl()+1);
             if(padre.getAvl()==1 || padre.getAvl()==-1)
                 termine=true;
             if(padre.getAvl()>1 || padre.getAvl()<-1)
                 padre=rota(padre);
             actual=padre;
         }
-    }    
+    }
     
     private void borraAVL(NodoAVL<T> actual){
         if(actual == null){
@@ -297,21 +304,53 @@ public class ArbolAVL <T extends Comparable <T>> {
         }
     }
     
-        public void inOrden(){
-        ArrayList<T> datos = new ArrayList<>();
+    public void inOrden(){
+        ArrayList<String> datos = new ArrayList<>();
         inOrden(raiz, datos);
-        for(T es: datos){
+        for(String es: datos){
             System.out.println(es);
         }       
     }
-    private void inOrden(NodoAVL<T> act, ArrayList<T> lista){
+    private void inOrden(NodoAVL<T> act, ArrayList<String> lista){
         if(act==null){
             return;
         }
         inOrden(act.getIzq(), lista);
-        lista.add(act.getElem());
+        lista.add(act.getElem().toString() + "(FE: " + act.getAvl() + ")");
         inOrden(act.getDer(), lista);
     }
+    
+    public void porAltura(){
+        ArrayList<T> datos = new ArrayList<>();
+        porAltura(raiz, datos);
+        for(T es: datos){
+            System.out.println(es);
+        } 
+    }
+    private void porAltura(NodoAVL<T> act, ArrayList<T> lista){
+        if(act==null){
+            return;
+        }
+        lista.add(act.getElem());
+        porAltura(act.getIzq(), lista);
+        porAltura(act.getDer(), lista);
+    }
+    
+    public void preOrden(){
+        ArrayList<String> datos = new ArrayList<>();
+        preOrden(raiz, datos);
+        for(String es: datos){
+            System.out.println(es);
+        }       
+    }
+    private void preOrden(NodoAVL<T> act, ArrayList<String> lista){
+        if(act==null){
+            return;
+        }
+        lista.add(act.getElem().toString() + "(FE: " + act.getAvl() + ")");
+        preOrden(act.getIzq(), lista);
+        preOrden(act.getDer(), lista);
+    }    
     
     public int calculaAltura(){
         return calculaAltura(raiz, 0);
