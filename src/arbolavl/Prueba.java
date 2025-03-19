@@ -17,6 +17,7 @@ public class Prueba {
         arb.inserta(4);
         arb.inserta(2);
         arb.inserta(3);
+        arb.inserta(1);
         
         
         arb.preOrden();

@@ -63,11 +63,7 @@ public class ArbolAVL <T extends Comparable <T>> {
         cont++;
         boolean termine=false;
         while(padre!=null && !termine){
-            if(nuevo.getElem().compareTo(padre.getElem())<0)
-                padre.setAvl(padre.getAvl()-1);
-            else
-                padre.setAvl(padre.getAvl()+1);
-
+            actualizarFE(padre);
             if(padre.getAvl()>1 || padre.getAvl()<-1){
                 padre=rota(padre);
                 actualizarFE(padre);
